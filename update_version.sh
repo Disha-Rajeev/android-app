@@ -2,27 +2,32 @@
 
 # --- Configuration ---
 APP_DIR="app"        # Adjust if your app module has a different name
-BUILD_GRADLE="build.gradle.kts" # Assuming you are using Kotlin DSL
+BUILD_GRADLE="app/build.gradle.kts" # Assuming you are using Kotlin DSL
 COMMIT_MESSAGE="Bumped up version"
 
 # --- Helper Functions ---
 
 function get_version_code() {
-  grep "versionCode = " "$APP_DIR/$BUILD_GRADLE" | awk -F'= ' '{print $2}'
+  #grep "versionCode = " "$APP_DIR/$BUILD_GRADLE" | awk -F'= ' '{print $2}'
+  grep "versionCode = " "$BUILD_GRADLE" | awk -F'= ' '{print $2}'
 }
 
 function get_version_name() {
-  grep "versionName = " "$APP_DIR/$BUILD_GRADLE" | awk -F'= "' '{print $2}' | sed 's/"//g'
+  #grep "versionName = " "$APP_DIR/$BUILD_GRADLE" | awk -F'= "' '{print $2}' | sed 's/"//g'
+  grep "versionName = " "$BUILD_GRADLE" | awk -F'= "' '{print $2}' | sed 's/"//g'
 }
 
 function set_version_code() {
   local new_version_code="$1"
-  sed -i '' "s/versionCode = .*/versionCode = $new_version_code/" "$APP_DIR/$BUILD_GRADLE"
+  #sed -i '' "s/versionCode = .*/versionCode = $new_version_code/" "$APP_DIR/$BUILD_GRADLE"
+  sed -i '' "s/versionCode = .*/versionCode = $new_version_code/" "$BUILD_GRADLE"
 }
+
 
 function set_version_name() {
   local new_version_name="$1"
-  sed -i '' "s/versionName = \".*\"/versionName = \"$new_version_name\"/" "$APP_DIR/$BUILD_GRADLE"
+  #sed -i '' "s/versionName = \".*\"/versionName = \"$new_version_name\"/" "$APP_DIR/$BUILD_GRADLE"
+  sed -i '' "s/versionName = \".*\"/versionName = \"$new_version_name\"/" "$BUILD_GRADLE"
 }
 
 # --- Main Script ---
@@ -31,7 +36,7 @@ echo "--- Starting Version Update Script ---"
 
 # 1. Go into app directory
 echo "1. Navigating to $APP_DIR directory..."
-cd "$APP_DIR" || { echo "Error: Could not navigate to $APP_DIR"; exit 1; }
+#cd "$APP_DIR" || { echo "Error: Could not navigate to $APP_DIR"; exit 1; }
 
 # 2. Get current versionCode and print it
 current_version_code=$(get_version_code)
